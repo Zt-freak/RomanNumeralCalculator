@@ -72,7 +72,7 @@ namespace Calculator
             switch (this.step)
             {
                 case 1:
-                    this.firstValue = float.Parse(this.display.Text);
+                    this.firstValue = this.RomanToArabic(this.display.Text);
                     this.mathOperator = button.Text;
                     this.display.Text = "";
                     this.step++;
@@ -96,7 +96,7 @@ namespace Calculator
             switch (this.step)
             {
                 case 3:
-                    this.secondValue = float.Parse(this.display.Text);
+                    this.secondValue = this.RomanToArabic(this.display.Text);
                     this.display.Text = "";
                     float answer = 0;
                     switch (this.mathOperator)
@@ -212,6 +212,46 @@ namespace Calculator
                 }
                 tempDigitButtonIndex++;
             }
+        }
+
+        private float RomanToArabic (string RomanNumber)
+        {
+            float answer = 0;
+            float lastAnswer = 0;
+            string numeralValue = "";
+            string lastNumeralValue = "";
+            int numeralIndex = 0;
+            List<string[]> numeralValues = new List<string[]>();
+            numeralValues.Add(new string[] { "I", "1" });
+            numeralValues.Add(new string[] { "V", "5" });
+            numeralValues.Add(new string[] { "X", "10" });
+            numeralValues.Add(new string[] { "L", "50" });
+            numeralValues.Add(new string[] { "C", "100" });
+            numeralValues.Add(new string[] { "D", "500" });
+            numeralValues.Add(new string[] { "M", "1000" });
+
+            foreach (char numeral in RomanNumber)
+            {
+                numeralValue = numeralValues.SingleOrDefault(x => x[0] == numeral.ToString())[1];
+                numeralIndex = numeralValues.FindIndex(x => x[0] == numeral.ToString());
+
+                if (lastNumeralValue.Length > 0)
+                {
+                    if (float.Parse(lastNumeralValue) == 1 && (float.Parse(numeralValue) == 5 || float.Parse(numeralValue) == 10)
+                    || float.Parse(lastNumeralValue) == 10 && (float.Parse(numeralValue) == 50 || float.Parse(numeralValue) == 100)
+                    || float.Parse(lastNumeralValue) == 100 && (float.Parse(numeralValue) == 500 || float.Parse(numeralValue) == 1000)
+                    )
+                    {
+                        answer -= 2 * float.Parse(lastNumeralValue);
+                    }
+                }
+                
+                lastNumeralValue = numeralValue;
+                lastAnswer = answer;
+                answer += float.Parse(numeralValue);
+            }
+
+            return answer;
         }
     }
 }

@@ -31,8 +31,16 @@ namespace Calculator
         private void InitializeComponent()
         {
             this.display = new System.Windows.Forms.TextBox();
+            this.numerals = new ArrayList();
+            this.numerals.Add("I");
+            this.numerals.Add("V");
+            this.numerals.Add("X");
+            this.numerals.Add("L");
+            this.numerals.Add("C");
+            this.numerals.Add("D");
+            this.numerals.Add("M");
             this.digitButtons = new ArrayList();
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 7; i++)
             {
                 this.digitButtons.Add(new DigitButton());
             }
@@ -69,18 +77,7 @@ namespace Calculator
                     tempDigitButtonColumn = 0;
                     tempDigitButtonRow++;
                 }
-                if (ButtonIndex == 10)
-                {
-                    digitButton.Text = ".";
-                    digitButton.Enabled = false;
-                }
-                else if (ButtonIndex == 11)
-                {
-                    digitButton.Text = "-";
-                }
-                else {
-                    digitButton.Text = ButtonIndex.ToString();
-                }
+                digitButton.Text = this.numerals[ButtonIndex].ToString();
                 digitButton.Location = new System.Drawing.Point(13 + (108 * tempDigitButtonColumn), 6 + (36 * tempDigitButtonRow));
                 digitButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
                 digitButton.Name = "digitButton" + ButtonIndex.ToString();
@@ -223,6 +220,7 @@ namespace Calculator
 
         private System.Windows.Forms.TextBox display;
         private System.Collections.ArrayList digitButtons;
+        private System.Collections.ArrayList numerals;
         private System.Windows.Forms.Button operatorButtonPlus;
         private System.Windows.Forms.Button operatorButtonMinus;
         private System.Windows.Forms.Button operatorButtonMultiply;
